@@ -32,10 +32,12 @@ class Student(object):
 	def get_user_id(self):
 		return self._user_id
 
-	def calc_average_mood(self):
+	def calc_average_mood(self): 
+		self._mood_grades = [int(i) for i in self._mood_grades if i != ',']
 		return sum(self._mood_grades) / len(self._mood_grades)
 
 	def calc_average_grade(self):
+		self._project._grades = [int(i) for i in self._project._grades if i != ',']
 		return sum(self._project._grades) / len(self._project._grades)
 
 	def to_string(self):

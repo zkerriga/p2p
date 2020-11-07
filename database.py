@@ -151,7 +151,7 @@ class Database():
 		with self.connection:
 			studends = self.cursor.execute("SELECT * FROM {}". format(self.table_student)).fetchall()
 		studends_list = []
-		if (not studends):
+		if studends:
 			
 			for student in studends:
 

@@ -54,7 +54,7 @@ def evaluate(message):
 		set_state(message.chat.id, st.S_EVALUATE_PEERED.value)
 		set_state(matched_student.get_user_id(), st.S_TO_BE_EVALUATE_PEERED.value)
 	else:
-		bot.send_message(message.chat.id, "Peer matching. Wait...")
+		bot.send_message(message.chat.id, "Peer matching. Wait...", reply_markup=types.ReplyKeyboardRemove())
 
 @bot.message_handler(content_type = ["text"])
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
@@ -75,7 +75,7 @@ def to_be_evaluate(message):
 		set_state(message.chat.id, st.S_TO_BE_EVALUATE_PEERED.value)
 		set_state(matched_student.get_user_id(), st.S_EVALUATE_PEERED.value)
 	else:
-		bot.send_message(message.chat.id, "Peer matching. Wait...")
+		bot.send_message(message.chat.id, "Peer matching. Wait...", reply_markup=types.ReplyKeyboardRemove())
 
 
 
