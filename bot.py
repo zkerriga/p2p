@@ -12,6 +12,7 @@ bot = telebot.TeleBot(config.TOKEN)
 @bot.message_handler(commands = ["start"])
 def start(message):
 	bot.send_message(message.chat.id, "Enter your name to log in:")
+	# ADD INFO MESSAGE
 	print(f"[+] Login: {message.from_user.username}")
 	set_state(message.chat.id, st.S_LOGIN_WAIT.value)
 
@@ -28,8 +29,9 @@ def add_to_database(message):
 	bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
 
 @bot.message_handler(content_type = ["text"])
-@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value)
-def function():
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
+											and message.text == "Evaluate")
+def evaluate(message):
 	pass
 
 

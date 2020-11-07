@@ -59,7 +59,7 @@ if (__name__ == "__main__"):
 	print(stud)
 
 def create_student_from_name(user_id:int, input_name:str, username):
-	projects = ['Double integral', 'Differential equation', 'Information security', 'Electricity supply', 'Limits']
+	projects = ['Double integral', 'Differential equation']
 	universitys = ["University of Oxford", "California Institute of Technology", "University of Cambridge", "Yale University", "The University of Chicago"]
 	levels = [1, 2]
 	grades = [1, 2, 3, 4, 5]
