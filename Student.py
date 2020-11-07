@@ -34,15 +34,17 @@ Link: {4}'''.format(
 		return self.to_string()
 
 	def to_dictionary(self):
+		mood_grades = [str(integer) for integer in self._mood_grades]
+		project_grades = [str(integer) for integer in self._project.get_grades()]
 		return {
 			"user_id": self._user_id,
 			"university": self._university,
 			"name": self._name,
 			"link": self._link,
 			"level": self._level,
-			"mood_grades": self._mood_grades.join(","),
+			"mood_grades": ",".join(mood_grades),
 			"project_name": self._project.get_name(),
-			"project_grades": self._project.get_grades().join(",")
+			"project_grades": ",".join(project_grades)
 		}
 
 if (__name__ == "__main__"):
