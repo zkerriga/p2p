@@ -3,6 +3,7 @@ import config
 from db_worker import get_current_state as get_state
 from db_worker import set_state
 from states import States as st
+from Student import *
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -15,7 +16,10 @@ def start(message):
 
 @bot.message_handler(lambda message: get_state(message.from_user.id) == st.S_NOT_IN_DATA)
 def add_to_database(message):
-	
+	student = create_student_from_name(message.from_user.id, message.text, message.from_user.username)
+	print(f"[+] Student {message.from_user.username} created!")
+	#student -> database
+
 
 
 ####

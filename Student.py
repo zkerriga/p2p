@@ -1,35 +1,81 @@
 from Project import Project
+import random
 
 class Student(object):
 	"""
 	The student object contains all the information about it.
 	"""
-	def __init__(self, name, university, ):
+	def __init__(self, user_id:int, university:str, name:str, link:str, level:int, project_name:str, project_grades:list, mood_grades:list):
 		super(Student, self).__init__()
 		
-		self.user_id:int
-		self.university:str
-		self.name:str
-		self.link:str
-		self.level:str
-		self.project:Project
-		self.mood_grades:list
+		self._user_id:int = user_id
+		self._university:str = university
+		self._name:str = name
+		self._link:str = link
+		self._level:int = level
+		self._project:Project = Project(project_name, project_grades)
+		self._mood_grades:list = mood_grades
 
-	def to_dictionary():
-		return {"user_id": self.name}
+	def to_string(self):
+		return '''\
+Student: {0}
+University: {1}
+Level: {2}
+Project: {3}
+Link: {4}'''.format(
+			self._name,
+			self._university,
+			self._level,
+			self._project.get_name(),
+			self._link
+			)
+
+	def __str__(self):
+		return self.to_string()
+
+	def to_dictionary(self):
+		return {
+			"user_id": self._user_id,
+			"university": self._university,
+			"name": self._name,
+			"link": self._link,
+			"level": self._level,
+			"mood_grades": self._mood_grades.join(","),
+			"project_name": self._project.get_name(),
+			"project_grades": self._project.get_grades().join(",")
+		}
 
 if (__name__ == "__main__"):
-	dictionary = {}
+	stud = Student(
+		user_id = 312162559,
+		university = "University of Oxford",
+		name = "Daniil",
+		link = "t.me/zkerriga",
+		level = 1,
+		project_name = "double integral",
+		project_grades = [4, 4],
+		mood_grades = [4, 5, 5]
+	)
+	print(stud)
 
-	dictionary["user_id"] = 1
-	dictionary["university"] = "KFU"
-	dictionary["name"] = "Max"
-	dictionary["link"] = "t.me/zkerriga"
-	dictionary["level"] = 1
-	dictionary["mood_grades"] = "1,2,3,4,5"
-	dictionary["project_name"] = "MatLab"
-	dictionary["project_grades"] = "double integral"
+def create_student_from_name(user_id:int, input_name:str, username):
+	projects = ['Double integral', 'Differential equation', 'Information security', 'Electricity supply', 'Limits']
+	universitys = ["University of Oxford", "California Institute of Technology", "University of Cambridge", "Yale University", "The University of Chicago"]
+	levels = [1, 2]
+	grades = [1, 2, 3, 4, 5]
 
-def get_random_student():
-	projects = ['double integral', 'differential equation', 'information security', 'electricity supply', 'limits']
-	universitys = []
+	if (username):
+		link = "t.me/" + username
+	else:
+		link = "t.me/" + "error_link"
+	return Student(
+		user_id,
+		random.choice(universitys),
+		input_name,
+		link,
+		random,choice(levels),
+		random.choice(projects),
+		[random.choice(grades), random.choice(grades), random.choice(grades)],
+		[random.choice(grades), random.choice(grades), random.choice(grades)]
+	)
+
