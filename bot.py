@@ -7,21 +7,13 @@ from Student import *
 from keyboards import *
 from utils import *
 from match import match
+import text
 
 bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(commands = ["start"])
 def start(message):
-	bot.send_message(message.chat.id, '''\
-Hi there!👋
-
-It's a prototype of our student-to-student 👩‍🎓👨‍🎓 evaluation system.
-
-✨Imagine that you're currently studying at university and you have a project which you need to evaluate with the teacher.
-🤝Before that, we offer you to get an evaluation from other students which have already done or doing this project now.
-
-Write your name and go ahead!😀
-''')
+	bot.send_message(message.chat.id, text.TEXT_START)
 	bot.send_message(message.chat.id, "Enter your name to log in:", reply_markup=types.ReplyKeyboardRemove())
 	print(f"[+] Login: {message.from_user.username}")
 	set_state(message.chat.id, st.S_LOGIN_WAIT.value)
@@ -55,7 +47,9 @@ def evaluate(message):
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(message.chat.id, text.TEXT_FOR_EVALUATOR, reply_markup=grade_keyboard())
 		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(matched_student.get_user_id(), text.TEXT_FOR_EVALUATED, reply_markup=grade_keyboard())
 		set_state(message.chat.id, st.S_EVALUATE_PEERED.value)
 		set_state(matched_student.get_user_id(), st.S_TO_BE_EVALUATE_PEERED.value)
 	else:
@@ -74,7 +68,9 @@ def to_be_evaluate(message):
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(message.chat.id, text.TEXT_FOR_EVALUATED, reply_markup=grade_keyboard())
 		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(matched_student.get_user_id(), text.TEXT_FOR_EVALUATOR, reply_markup=grade_keyboard())
 		set_state(message.chat.id, st.S_TO_BE_EVALUATE_PEERED.value)
 		set_state(matched_student.get_user_id(), st.S_EVALUATE_PEERED.value)
 	else:
@@ -100,13 +96,7 @@ def evaluate_grade_1(message):
 
 def evaluation_is_over(message):
 	bot.send_message(message.chat.id, "Evaluation is over!")
-	bot.send_message(message.chat.id, '''\
-That is how the evaluation works.😌
-
-The feedbacks university can use to find out the student who needs help.😇
-
-It's not a replacement for "classic" evaluation, just an addition to it.👌
-''', reply_markup=continue_keyboard())
+	bot.send_message(message.chat.id, text.TEXT_FINISH, reply_markup=continue_keyboard())
 	set_state(message.chat.id, st.S_CONTINUE.value)
 
 
