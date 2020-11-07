@@ -12,8 +12,17 @@ bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(commands = ["start"])
 def start(message):
+	bot.send_message(message.chat.id, '''\
+Hi there!👋
+
+It's a prototype of our student-to-student 👩‍🎓👨‍🎓 evaluation system.
+
+✨Imagine that you're currently studying at university and you have a project which you need to evaluate with the teacher.
+🤝Before that, we offer you to get an evaluation from other students which have already done or doing this project now.
+
+Write your name and go ahead!😀
+''')
 	bot.send_message(message.chat.id, "Enter your name to log in:", reply_markup=types.ReplyKeyboardRemove())
-	# ADD INFO MESSAGE
 	print(f"[+] Login: {message.from_user.username}")
 	set_state(message.chat.id, st.S_LOGIN_WAIT.value)
 
@@ -45,14 +54,16 @@ def evaluate(message):
 
 	matched_student = match(current_student)
 	if matched_student:
-		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
-		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}")
+		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}", reply_markup=grade_keyboard())
+		set_state(message.chat.id, st.S_EVALUATE_PEERED.value)
+		set_state(matched_student.get_user_id(), st.S_TO_BE_EVALUATE_PEERED.value)
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
 
 @bot.message_handler(content_type = ["text"])
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
-											and message.text == "To be evaluated")
+											and message.text == "Be evaluated")
 def to_be_evaluate(message):
 	print(f"[+] To be evaluated {message.from_user.username}")
 
@@ -62,14 +73,63 @@ def to_be_evaluate(message):
 
 	matched_student = match(current_student)
 	if matched_student:
-		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
-		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}")
+		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}", reply_markup=grade_keyboard())
+		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}", reply_markup=grade_keyboard())
+		set_state(message.chat.id, st.S_TO_BE_EVALUATE_PEERED.value)
+		set_state(matched_student.get_user_id(), st.S_EVALUATE_PEERED.value)
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
 
 
 
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_EVALUATE_PEERED.value
+											and message.text == "Grade student")
+def evaluate_grade_start(message):
+	print(f"[+] evaluate_grade_start {message.from_user.username}")
+	bot.send_message(message.chat.id, "Rate how the student did the task:", reply_markup=grade_task_keyboard())
+	set_state(message.chat.id, st.S_EVALUATE_PEERED_GRADE_1.value)
 
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_EVALUATE_PEERED_GRADE_1.value
+											and message.text in ["1", "2", "3", "4", "5"])
+def evaluate_grade_1(message):
+	print(f"[+] evaluate_grade_1 {message.from_user.username}")
+	bot.send_message(message.chat.id, "Rate the student's mood (he or she will not see this grade):", reply_markup=grade_emoji_keyboard())
+	set_state(message.chat.id, st.S_EVALUATE_PEERED_GRADE_2.value)
+
+def evaluation_is_over(message):
+	bot.send_message(message.chat.id, "Evaluation is over!", reply_markup=types.ReplyKeyboardRemove())
+	bot.send_message(message.chat.id, '''\
+That is how the evaluation works.😌
+
+The feedbacks university can use to find out the student who needs help.😇
+
+It's not a replacement for "classic" evaluation, just an addition to it.👌
+''')
+	print_info(message)
+
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_EVALUATE_PEERED_GRADE_2.value)
+def evaluate_grade_2(message):
+	print(f"[+] To_be_evaluate_grade_2 {message.from_user.username}")
+	evaluation_is_over(message)
+
+
+
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TO_BE_EVALUATE_PEERED.value
+											and message.text == "Grade student")
+def to_be_evaluated_grade_start(message):
+	print(f"[+] To_be_evaluated_grade_start {message.from_user.username}")
+	bot.send_message(message.chat.id, "Rate the student's mood (he or she will not see this grade):", reply_markup=grade_emoji_keyboard())
+	set_state(message.chat.id, st.S_TO_BE_EVALUATE_PEERED_GRADE_1.value)
+
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TO_BE_EVALUATE_PEERED_GRADE_1.value)
+def to_be_evaluated_grade_grade_1(message):
+	print(f"[+] to_be_evaluated_grade_grade_1 {message.from_user.username}")
+	evaluation_is_over(message)
 
 
 
