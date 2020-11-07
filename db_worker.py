@@ -10,7 +10,7 @@ def get_current_state(user_id):
 		try:
 			return db[user_id].decode()
 		except KeyError:
-			print("{-}")
+			print("{-} get current state")
 			return States.S_START.value
 
 def set_state(user_id, value):
@@ -22,5 +22,5 @@ def set_state(user_id, value):
 			db[user_id] = value
 			return True
 		except:
-			print("{-} set")
+			print("{-} set current state")
 			return False

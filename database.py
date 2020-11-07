@@ -55,7 +55,6 @@ class Database():
 					d.get("project_grades", ""),
 					d.get("match_state", ""),
 				))
-			
 			except:
 				print("[-] User already exist")
 				return 0
@@ -82,7 +81,7 @@ class Database():
 			return student
 		return None
 
-	def set_eval_db(self, current_student:Student):
+	def get_matched_user(self, current_student:Student):
 		"""
 		set eval to db 
 		"""
@@ -94,15 +93,22 @@ class Database():
 		else:
 			searching_match = 1 
 		with self.connection:
-			self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?".format(self.table_student), (match_state, user_id))
-			self.commit()
-			find_matched_id = self.cursor.execute("SELECT user_id FROM {0} WHERE match_state = ? ".format(self.table_student), (searching_match)).fetchone()[0]
+			self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?"
+				.format(self.table_student), (match_state, user_id))
+			self.connection.commit()
+			find_matched_id = self.cursor.execute("SELECT user_id FROM {0} WHERE match_state = ? "
+				.format(self.table_student),(searching_match,)).fetchone()
+			if (not find_matched_id):
+				return None
+			find_matched_id = find_matched_id[0]
 			print("find_match: {0}".format(find_matched_id))
 			if find_matched_id:
 				not_matching = 0
-				self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?".format(self.table_student), (not_matching, user_id))
-				self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?".format(self.table_student), (not_matching, find_matched_id))
-				self.commit()
+				self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?"
+					.format(self.table_student), (not_matching, user_id))
+				self.cursor.execute("UPDATE {0} SET match_state = ? WHERE user_id = ?"
+					.format(self.table_student), (not_matching, find_matched_id))
+				self.connection.commit()
 				matched_student = self.get_student(find_matched_id)
 				current_student.set_not_match()
 				matched_student.set_not_match()
@@ -110,9 +116,6 @@ class Database():
 			else:
 				None
 		return None		
-
-
-
 
 	def close(self):
 		self.connection.close()

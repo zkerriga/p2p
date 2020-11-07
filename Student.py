@@ -5,7 +5,7 @@ class Student(object):
 	"""
 	The student object contains all the information about it.
 	"""
-	def __init__(self, user_id:int, university:str, name:str, link:str, level:int, project_name:str, project_grades:list, mood_grades:list):
+	def __init__(self, user_id:int, university:str, name:str, link:str, level:int, project_name:str, project_grades:list, mood_grades:list, match_state:int=0):
 		super(Student, self).__init__()
 		
 		self._user_id:int = user_id
@@ -15,7 +15,7 @@ class Student(object):
 		self._level:int = level
 		self._project:Project = Project(project_name, project_grades)
 		self._mood_grades:list = mood_grades
-		self._match_state:int = 0
+		self._match_state:int = match_state
 
 	def set_not_match(self):
 		self._match_state = 0

@@ -46,7 +46,7 @@ def evaluate(message):
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
-		# second
+		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}")
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
 
@@ -63,7 +63,7 @@ def to_be_evaluate(message):
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
-		# second
+		bot.send_message(matched_student.get_user_id(), f"Your peer:\n\n{current_student.to_string()}")
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
 
