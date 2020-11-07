@@ -73,7 +73,7 @@ def create_student_from_name(user_id:int, input_name:str, username):
 		random.choice(universitys),
 		input_name,
 		link,
-		random,choice(levels),
+		random.choice(levels),
 		random.choice(projects),
 		[random.choice(grades), random.choice(grades), random.choice(grades)],
 		[random.choice(grades), random.choice(grades), random.choice(grades)]

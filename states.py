@@ -4,5 +4,6 @@ class States(Enum):
 	"""
 	All types of bot's Variebles
 	"""
-	S_START = "0"
-	S_NOT_IN_DATA = "1"
+	S_START = '0'
+	S_LOGIN_WAIT = '1'
+	S_TWO_BUTTONS = '2'
