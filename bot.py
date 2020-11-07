@@ -12,7 +12,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(commands = ["start"])
 def start(message):
-	bot.send_message(message.chat.id, "Enter your name to log in:")
+	bot.send_message(message.chat.id, "Enter your name to log in:", reply_markup=types.ReplyKeyboardRemove())
 	# ADD INFO MESSAGE
 	print(f"[+] Login: {message.from_user.username}")
 	set_state(message.chat.id, st.S_LOGIN_WAIT.value)
@@ -20,7 +20,7 @@ def start(message):
 def print_info(message, student=None):
 	if (not student):
 		student = get_student_from_db(message.from_user.id)
-	bot.send_message(message.chat.id, f"Your info:\n\n{student.to_string()}")
+	bot.send_message(message.chat.id, f"Your info:\n\n{student.to_string()}", reply_markup=types.ReplyKeyboardRemove())
 
 	set_state(message.chat.id, st.S_TWO_BUTTONS.value)
 	bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
@@ -42,11 +42,11 @@ def evaluate(message):
 	set_state(message.chat.id, st.S_EVALUATE.value)
 	current_student = get_student_from_db(message.from_user.id)
 	current_student.set_eval(True)
-	# update data for is_eval
 
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+		# second
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
 
@@ -59,13 +59,19 @@ def to_be_evaluate(message):
 	set_state(message.chat.id, st.S_TO_BE_EVALUATE.value)
 	current_student = get_student_from_db(message.from_user.id)
 	current_student.set_eval(False)
-	# update data for is_eval
 
 	matched_student = match(current_student)
 	if matched_student:
 		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+		# second
 	else:
 		bot.send_message(message.chat.id, "Peer matching. Wait...")
+
+
+
+
+
+
 
 #### ADM BLOCK
 
