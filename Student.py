@@ -32,6 +32,12 @@ class Student(object):
 	def get_user_id(self):
 		return self._user_id
 
+	def calc_average_mood(self):
+		return sum(self._mood_grades) / len(self._mood_grades)
+
+	def calc_average_grade(self):
+		return sum(self._project._grades) / len(self._project._grades)
+
 	def to_string(self):
 		return '''\
 Student: {0}
