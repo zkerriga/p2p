@@ -29,6 +29,9 @@ class Student(object):
 	def get_match_state(self):
 		return self._match_state
 
+	def get_user_id(self):
+		return self._user_id
+
 	def to_string(self):
 		return '''\
 Student: {0}
@@ -57,7 +60,8 @@ Link: {4}'''.format(
 			"level": self._level,
 			"mood_grades": ",".join(mood_grades),
 			"project_name": self._project.get_name(),
-			"project_grades": ",".join(project_grades)
+			"project_grades": ",".join(project_grades),
+			"match_state" : self._match_state,
 		}
 
 if (__name__ == "__main__"):
