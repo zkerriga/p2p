@@ -1,5 +1,6 @@
 from vedis import Vedis 
 import config
+from states import States
 
 def get_current_state(user_id):
 	"""
@@ -9,7 +10,7 @@ def get_current_state(user_id):
 		try:
 			return db[user_id].decode()
 		except KeyError:
-			return config.States.S_START.value
+			return States.S_START.value
 
 def set_state(user_id, value):
 	"""
