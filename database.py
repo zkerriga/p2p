@@ -9,6 +9,33 @@ class Database():
 	Database for students
 	"""
 	table_student = "Students"
+	student_1 = Student(user_id = 51325135,
+						university = "California Institute of Technology",
+						name = "Nick",
+						link = "t.me/zkerriga",
+						level = 1,
+						mood_grades = [1, 2, 3],
+						project_name = 'Differential equation',
+						project_grades = [1, 3, 4, 2, 2],
+						match_state = 1)
+	student_2 = Student(user_id = 531253125,
+						university = "Yale University",
+						name = "Kelly",
+						link = "t.me/Sasha_mar9",
+						level = 2,
+						mood_grades = [1, 1, 1],
+						project_name = 'Double integral',
+						project_grades = [5, 3, 4, 4, 5],
+						match_state = 0)
+	student_3 = Student(user_id = 521351,
+						university = "University of Cambridge",
+						name = "Ray",
+						link = "t.me/awerebea",
+						level = 1,
+						mood_grades = [3, 2, 3],
+						project_name = 'Double integral',
+						project_grades = [3, 3, 5, 5, 2],
+						match_state = 2)
 
 	def __init__(self):
 		self.connection = sqlite3.connect(config.database)
@@ -64,7 +91,8 @@ class Database():
 		get all info about student form Student table
 		"""
 		with self.connection:
-			info_student = self.cursor.execute("SELECT * FROM {0} WHERE user_id = ?".format(self.table_student), (user_id, )).fetchall()
+			info_student = self.cursor.execute("SELECT * FROM {0} WHERE user_id = ?".
+				format(self.table_student), (user_id, )).fetchall()
 			print("Student: {}".format(info_student))
 		if info_student[0] != []:
 			info = info_student[0]
@@ -115,12 +143,47 @@ class Database():
 				return matched_student
 			else:
 				None
-		return None		
+		return None	
+
+	def get_list_students(self):
+		"""
+		Get whole list of studends
+		"""
+		with self.connection:
+			studends = self.cursor.execute("SELECT * FROM {}". format(self.table_student)).fetchall()
+		studends_list = []
+		if (not studends):
+			
+			for student in studends:
+
+				temp_student = Student(user_id = student[1],
+						university = student[2],
+						name = student[3],
+						link = student[4],
+						level = student[5],
+						mood_grades = student[6],
+						project_name = student[7],
+						project_grades = student[8],
+						match_state = student[9])
+				studends_list.append(temp_student)
+		studends_list.append(self.student_1)
+		studends_list.append(self.student_2)
+		studends_list.append(self.student_3)
+		return studends_list
+		
 
 	def close(self):
 		self.connection.close()
+
+	
 	
 
 if __name__ == "__main__":
-	a.create_table_student()
-
+	"""
+	a = Database()
+	l = a.get_list_students()
+	for i in l:
+		print()
+		print("The student: {}", i)
+		print()
+	"""
