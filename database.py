@@ -16,7 +16,7 @@ class Database():
 						mood_grades = [1, 2, 3],
 						project_name = 'Differential equation',
 						project_grades = [1, 3, 4, 2, 2],
-						match_state = 1)
+						match_state = 0)
 	student_2 = Student(user_id = 531253125,
 						university = "Yale University",
 						name = "Kelly",
@@ -34,7 +34,7 @@ class Database():
 						mood_grades = [3, 2, 3],
 						project_name = 'Double integral',
 						project_grades = [3, 3, 5, 5, 2],
-						match_state = 2)
+						match_state = 0)
 
 	def __init__(self):
 		self.connection = sqlite3.connect(config.database)
