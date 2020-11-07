@@ -15,11 +15,14 @@ def start(message):
 
 @bot.message_handler(lambda message: get_state(message.from_user.id) == st.S_NOT_IN_DATA)
 def add_to_database(message):
-	pass
+	
 
-@bot.message_handler(content_types=["text"])
+
+####
+
+@bot.message_handler(lambda message: True)
 def repeat_all_messages(message):
-    bot.send_message(message.chat.id, message.text)
+	print(f"[-] Another message: {message.from_user.username}")
 
 if __name__ == "__main__":
 	bot.infinity_polling()
