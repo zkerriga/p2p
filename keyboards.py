@@ -41,3 +41,10 @@ def grade_emoji_keyboard():
 	button_3 = types.KeyboardButton("😞")
 	markup.add(button_3, button_2, button_1)
 	return markup
+
+
+def continue_keyboard():
+	markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+	button_1 = types.KeyboardButton("Continue")
+	markup.add(button_1)
+	return markup

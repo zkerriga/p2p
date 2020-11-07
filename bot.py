@@ -99,15 +99,16 @@ def evaluate_grade_1(message):
 	set_state(message.chat.id, st.S_EVALUATE_PEERED_GRADE_2.value)
 
 def evaluation_is_over(message):
-	bot.send_message(message.chat.id, "Evaluation is over!", reply_markup=types.ReplyKeyboardRemove())
+	bot.send_message(message.chat.id, "Evaluation is over!")
 	bot.send_message(message.chat.id, '''\
 That is how the evaluation works.😌
 
 The feedbacks university can use to find out the student who needs help.😇
 
 It's not a replacement for "classic" evaluation, just an addition to it.👌
-''')
-	print_info(message)
+''', reply_markup=continue_keyboard())
+	set_state(message.chat.id, st.S_CONTINUE.value)
+
 
 @bot.message_handler(content_type = ["text"])
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_EVALUATE_PEERED_GRADE_2.value)
@@ -130,6 +131,10 @@ def to_be_evaluated_grade_start(message):
 def to_be_evaluated_grade_grade_1(message):
 	print(f"[+] to_be_evaluated_grade_grade_1 {message.from_user.username}")
 	evaluation_is_over(message)
+
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_CONTINUE.value)
+def after_continue_button(message):
+	print_info(message)
 
 
 
