@@ -72,26 +72,16 @@ def to_be_evaluate(message):
 attempt = 0
 
 @bot.message_handler(commands = ["adm"])
-# request admin password
 def adm(message):
 	bot.send_message(message.chat.id, "Input password (1234):", reply_markup=types.ReplyKeyboardRemove())
 	set_state(message.chat.id, st.S_WRONG_ADM_PASS.value)
 
-def set_keyboard():
-	# display 'pull data' button for admin
-	markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
-	button_1 = types.KeyboardButton ("Pull data")
-	button_2 = types.KeyboardButton ("Quit")
-	markup.add(button_1, button_2)
-
-	return markup
-
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_WRONG_ADM_PASS.value)
-def check_pass(message):
+def check_pass_adm(message):
 	global attempt
 	if message.text == "1234":
 		attempt = 0
-		bot.send_message(message.chat.id, "Hello, Admin!", reply_markup=set_keyboard())
+		bot.send_message(message.chat.id, "Hello, Admin!", reply_markup=adm_teacher_keyboard())
 		set_state(message.chat.id, st.S_VALID_ADM_PASS.value)
 	elif attempt < 2:
 		attempt += 1
@@ -102,16 +92,47 @@ def check_pass(message):
 		print_info(message)
 
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_VALID_ADM_PASS.value)
-def pull_data(message):
+def pull_data_adm(message):
 	if message.text == "Pull data":
-		bot.send_message(message.chat.id, "Pullling data... and logout", reply_markup = types.ReplyKeyboardRemove())
+		bot.send_message(message.chat.id, "Pullling 'mental health' data... and logout", reply_markup = types.ReplyKeyboardRemove())
 	elif message.text == "Quit":
 		bot.send_message(message.chat.id, "Admin logout", reply_markup = types.ReplyKeyboardRemove())
 	print_info(message)
 
-
 #### END ADM BLOCK
 
+#### TEACHER BLOCK
+
+@bot.message_handler(commands = ["teacher"])
+# request teacher password
+def teacher(message):
+	bot.send_message(message.chat.id, "Input password (4321):", reply_markup=types.ReplyKeyboardRemove())
+	set_state(message.chat.id, st.S_WRONG_TEACH_PASS.value)
+
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_WRONG_TEACH_PASS.value)
+def check_pass_teacher(message):
+	global attempt
+	if message.text == "4321":
+		attempt = 0
+		bot.send_message(message.chat.id, "Hello, Teacher!", reply_markup=adm_teacher_keyboard())
+		set_state(message.chat.id, st.S_VALID_TEACH_PASS.value)
+	elif attempt < 2:
+		attempt += 1
+		bot.send_message(message.chat.id, "Wrong password!")
+	else:
+		attempt = 0
+		bot.send_message(message.chat.id, "Cancel authorization", reply_markup = types.ReplyKeyboardRemove())
+		print_info(message)
+
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_VALID_TEACH_PASS.value)
+def pull_data_teacher(message):
+	if message.text == "Pull data":
+		bot.send_message(message.chat.id, "Pullling 'academic perfomance' data... and logout", reply_markup = types.ReplyKeyboardRemove())
+	elif message.text == "Quit":
+		bot.send_message(message.chat.id, "Teacher logout", reply_markup = types.ReplyKeyboardRemove())
+	print_info(message)
+
+#### END TEACHER BLOCK
 
 
 #### ERROR BLOCK
