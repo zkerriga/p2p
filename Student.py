@@ -59,7 +59,7 @@ University: {1}
 Level: {2}
 Project: {3}
 Link: {4}
-Mood grade: {5}'''.format(
+Av. mood grade: {5}'''.format(
 			self._name,
 			self._university,
 			self._level,
@@ -75,7 +75,7 @@ University: {1}
 Level: {2}
 Project: {3}
 Link: {4}
-Mood grade: {5}'''.format(
+Av. project grade: {5}'''.format(
 			self._name,
 			self._university,
 			self._level,

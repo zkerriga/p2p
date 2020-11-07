@@ -2,6 +2,7 @@ __MACOSX
 __pycache__
 venv
 db.sqlite3
+db.db
 
 
 config.py
