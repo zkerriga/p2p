@@ -1,0 +1,7 @@
+__MACOSX
+__pycache__
+venv
+db.sqlite3
+
+
+config.py
