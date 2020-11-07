@@ -1,5 +1,4 @@
 import sqlite3
-import utils
 import config
 import random
 from Student import Student
