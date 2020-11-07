@@ -16,32 +16,102 @@ def start(message):
 	print(f"[+] Login: {message.from_user.username}")
 	set_state(message.chat.id, st.S_LOGIN_WAIT.value)
 
+def print_info(message, student=None):
+	if (not student):
+		db = Database()
+		student = db.get_student(message.from_user.id)
+		db.close()
+	bot.send_message(message.chat.id, f"Your info:\n\n{student.to_string()}")
+
+	set_state(message.chat.id, st.S_TWO_BUTTONS.value)
+	bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
+
 @bot.message_handler(content_type = ["text"])
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_LOGIN_WAIT.value)
 def add_to_database(message):
 	student = create_student_from_name(message.from_user.id, message.text, message.from_user.username)
 	print(f"[+] Student {message.from_user.username} created!")
-	bot.send_message(message.chat.id, f"Your info:\n\n{student.to_string()}", reply_markup=get_eval_keyboard())
 
 	db = Database()
 	db.add_student(student)
 	db.close()
 
-	set_state(message.chat.id, st.S_TWO_BUTTONS.value)
-	bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
+	print_info(message, student)
+	# set_state(message.chat.id, st.S_TWO_BUTTONS.value)
+	# bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
 
 @bot.message_handler(content_type = ["text"])
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
 											and message.text == "Evaluate")
 def evaluate(message):
 	set_state(message.chat.id, st.S_EVALUATE.value)
-	bot.send_message(message.chat.id, "Peer matching...")
 	db = Database()
 	current_student = db.get_student(message.from_user.id)
 	db.close()
 	matched_student = match(current_student)
-	bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+	if matched_student:
+		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+	else:
+		bot.send_message(message.chat.id, "Peer matching...")
 
+@bot.message_handler(content_type = ["text"])
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
+											and message.text == "To be evaluated")
+def evaluate(message):
+	set_state(message.chat.id, st.S_TO_BE_EVALUATE.value)
+	db = Database()
+	current_student = db.get_student(message.from_user.id)
+	db.close()
+	matched_student = match(current_student)
+	if matched_student:
+		bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+	else:
+		bot.send_message(message.chat.id, "Peer matching...")
+
+#### ADM BLOCK
+
+attempt = 0
+
+@bot.message_handler(commands = ["adm"])
+# request admin password
+def adm(message):
+	bot.send_message(message.chat.id, "Input password (1234):", reply_markup=types.ReplyKeyboardRemove())
+	set_state(message.chat.id, st.S_WRONG_ADM_PASS.value)
+
+def set_keyboard():
+	# display 'pull data' button for admin
+	markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+	button_1 = types.KeyboardButton ("Pull data")
+	button_2 = types.KeyboardButton ("Quit")
+	markup.add(button_1, button_2)
+
+	return markup
+
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_WRONG_ADM_PASS.value)
+def check_pass(message):
+	global attempt
+	if message.text == "1234":
+		attempt = 0
+		bot.send_message(message.chat.id, "Hello, Admin!", reply_markup=set_keyboard())
+		set_state(message.chat.id, st.S_VALID_ADM_PASS.value)
+	elif attempt < 2:
+		attempt += 1
+		bot.send_message(message.chat.id, "Wrong password!")
+	else:
+		attempt = 0
+		bot.send_message(message.chat.id, "Cancel authorization", reply_markup = types.ReplyKeyboardRemove())
+		print_info(message)
+
+@bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_VALID_ADM_PASS.value)
+def pull_data(message):
+	if message.text == "Pull data":
+		bot.send_message(message.chat.id, "Pullling data... and logout", reply_markup = types.ReplyKeyboardRemove())
+	elif message.text == "Quit":
+		bot.send_message(message.chat.id, "Admin logout", reply_markup = types.ReplyKeyboardRemove())
+	print_info(message)
+
+
+#### END ADM BLOCK
 
 @bot.message_handler(func = lambda message: True)
 def repeat_all_messages(message):
