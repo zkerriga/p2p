@@ -5,9 +5,8 @@ from db_worker import set_state
 from states import States as st
 from Student import *
 from keyboards import *
-from database import Database
-import utils
-
+from utils import *
+from match import match
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -31,11 +30,7 @@ def print_info(message, student=None):
 def add_to_database(message):
 	student = create_student_from_name(message.from_user.id, message.text, message.from_user.username)
 	print(f"[+] Student {message.from_user.username} created!")
-
-	db = Database()
-	db.add_student(student)
-	db.close()
-
+	add_student_to_db(student)
 	print_info(message, student)
 
 @bot.message_handler(content_type = ["text"])

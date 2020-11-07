@@ -17,16 +17,16 @@ class Student(object):
 		self._mood_grades:list = mood_grades
 		self._match_state:int = 0
 
-	def set_not_match():
+	def set_not_match(self):
 		self._match_state = 0
 
-	def set_eval(is_eval):
+	def set_eval(self, is_eval):
 		if is_eval:
 			self._match_state = 1
 		else:
 			self._match_state = 2
 	
-	def get_match_state():
+	def get_match_state(self):
 		return self._match_state
 
 	def to_string(self):
