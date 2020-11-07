@@ -15,6 +15,19 @@ class Student(object):
 		self._level:int = level
 		self._project:Project = Project(project_name, project_grades)
 		self._mood_grades:list = mood_grades
+		self._match_state:int = 0
+
+	def set_not_match():
+		self._match_state = 0
+
+	def set_eval(is_eval):
+		if is_eval:
+			self._match_state = 1
+		else:
+			self._match_state = 2
+	
+	def get_match_state():
+		return self._match_state
 
 	def to_string(self):
 		return '''\
