@@ -17,17 +17,20 @@ class Student(object):
 		self._mood_grades:list = mood_grades
 		self._match_state:int = 0
 
-	def set_not_match():
+	def set_not_match(self):
 		self._match_state = 0
 
-	def set_eval(is_eval):
+	def set_eval(self, is_eval):
 		if is_eval:
 			self._match_state = 1
 		else:
 			self._match_state = 2
 	
-	def get_match_state():
+	def get_match_state(self):
 		return self._match_state
+
+	def get_user_id(self):
+		return self._user_id
 
 	def to_string(self):
 		return '''\
@@ -57,7 +60,8 @@ Link: {4}'''.format(
 			"level": self._level,
 			"mood_grades": ",".join(mood_grades),
 			"project_name": self._project.get_name(),
-			"project_grades": ",".join(project_grades)
+			"project_grades": ",".join(project_grades),
+			"match_state" : self._match_state,
 		}
 
 if (__name__ == "__main__"):
