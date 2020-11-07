@@ -34,7 +34,14 @@ def add_to_database(message):
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
 											and message.text == "Evaluate")
 def evaluate(message):
-	pass
+	set_state(message.chat.id, st.S_EVALUATE.value)
+	bot.send_message(message.chat.id, "Peer matching...")
+	db = Database()
+	current_student = db.get_student(message.from_user.id)
+	db.close()
+	matched_student = match(current_student)
+	bot.send_message(message.chat.id, f"Your peer:\n\n{matched_student.to_string()}")
+
 
 @bot.message_handler(func = lambda message: True)
 def repeat_all_messages(message):

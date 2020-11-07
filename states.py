@@ -7,3 +7,4 @@ class States(Enum):
 	S_START = '0'
 	S_LOGIN_WAIT = '1'
 	S_TWO_BUTTONS = '2'
+	S_EVALUATE = '3'
