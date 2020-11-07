@@ -2,7 +2,10 @@ import sqlite3
 import utils
 import config
 import random
+<<<<<<< HEAD
 from Student import Student
+=======
+>>>>>>> 4481ebad7c8d1e90ea887316efbcdc19e5d6d034
 
 class Database():
 	"""
@@ -33,11 +36,11 @@ class Database():
 			self.connection.commit()
 
 	def add_student(self, student:Student):
+
 		"""
 		Add a new student to db with data in dict 
 		"""
 		with self.connection:
-
 			d = student.to_dictionary()
 			try:
 				self.cursor.execute("INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}) VALUES(?, ?, ?, ?, ?, ?, ?, ?)".
@@ -76,6 +79,7 @@ class Database():
 						project_grades = info[8])
 
 			return student 
+
 	def close(self):
 		self.connection.close()
 
@@ -107,29 +111,6 @@ class Database():
 if __name__ == "__main__":
 	a = Database(config.database) # Testing
 	a.create_table_student()
-
-	"""dict_info = {"user_id" : 3,
-		"university" : "University of Oxford",
-		"name" : "Daniil",
-		"link" : "t.me/zkerriga",
-		"level" : 1,
-		"project_name" : "double integral",
-		"project_grades" : [4, 4],
-		"mood_grades" : [4, 5, 5]}"""
-	
-
-	#a.get_student()
-	
-
-
-
-
-
-
-
-
-
-
 
 
 
