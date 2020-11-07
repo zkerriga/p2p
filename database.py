@@ -2,20 +2,18 @@ import sqlite3
 import utils
 import config
 import random
-<<<<<<< HEAD
 from Student import Student
-=======
->>>>>>> 4481ebad7c8d1e90ea887316efbcdc19e5d6d034
 
 class Database():
 	"""
 	Database for students
 	"""
-	table_student = "Student"
+	table_student = "Students"
 
-	def __init__(self, database):
-		self.connection = sqlite3.connect(database)
+	def __init__(self):
+		self.connection = sqlite3.connect(config.database)
 		self.cursor = self.connection.cursor()
+		self.create_table_student()
 
 	def create_table_student(self):
 		with self.connection:
@@ -57,7 +55,7 @@ class Database():
 				))
 			
 			except:
-				print("User already exist")
+				print("[-] User already exist")
 				return 0
 
 	def get_student(self, user_id):
@@ -78,40 +76,13 @@ class Database():
 						project_name = info[7],
 						project_grades = info[8])
 
-			return student 
+			return student
+		return None
 
 	def close(self):
 		self.connection.close()
-
-"""
-	def get_info_for_adm(self):
-		
-		#get some users with bad mood from 1 to -5 by decreasing
-		#return a list of everuthing except user_id
-		
-		with self.connection:
-			info_students_adm = self.cursor.execute("SELECT name, level, project, mark, mood, link, username\
-			  FROM {0}".format(self.table_student)).fetchall()
-		
-		return info_students_adm
-
-	def get_info_for_teacher(self):
-		
-		#get some users with bad mood from 1 to -5 by decreasing
-		#return a list with name, level, project, mark, link, username 
-		
-		with self.connection:
-			info_students_teacher = self.cursor.execute("SELECT name, level, project, mark, link, username\
-			  FROM {0}".format(self.table_student)).fetchall()
-		
-		return info_students_teacher
-"""
 	
 
 if __name__ == "__main__":
-	a = Database(config.database) # Testing
 	a.create_table_student()
-
-
-
 

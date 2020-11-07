@@ -5,7 +5,7 @@ from db_worker import set_state
 from states import States as st
 from Student import *
 from keyboards import *
-
+from database import Database
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -23,7 +23,9 @@ def add_to_database(message):
 	print(f"[+] Student {message.from_user.username} created!")
 	bot.send_message(message.chat.id, f"Your info:\n\n{student.to_string()}", reply_markup=get_eval_keyboard())
 
-	#student -> database
+	db = Database()
+	db.add_student(student)
+	db.close()
 
 	set_state(message.chat.id, st.S_TWO_BUTTONS.value)
 	bot.send_message(message.chat.id, "You want to:", reply_markup=get_eval_keyboard())
@@ -33,7 +35,6 @@ def add_to_database(message):
 											and message.text == "Evaluate")
 def evaluate(message):
 	pass
-
 
 @bot.message_handler(func = lambda message: True)
 def repeat_all_messages(message):
