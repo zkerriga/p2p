@@ -52,6 +52,38 @@ Link: {4}'''.format(
 			self._link
 			)
 
+	def to_string_adm(self):
+		return '''\
+Student: {0}
+University: {1}
+Level: {2}
+Project: {3}
+Link: {4}
+Mood grade: {5}'''.format(
+			self._name,
+			self._university,
+			self._level,
+			self._project.get_name(),
+			self._link,
+			round(self.calc_average_mood(), 2)
+			)
+
+	def to_string_teacher(self):
+		return '''\
+Student: {0}
+University: {1}
+Level: {2}
+Project: {3}
+Link: {4}
+Mood grade: {5}'''.format(
+			self._name,
+			self._university,
+			self._level,
+			self._project.get_name(),
+			self._link,
+			round(self.calc_average_grade(), 2)
+			)
+
 	def __str__(self):
 		return self.to_string()
 

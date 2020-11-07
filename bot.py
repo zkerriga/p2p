@@ -7,6 +7,7 @@ from Student import *
 from keyboards import *
 from utils import *
 from match import match
+from sort_array import *
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -100,7 +101,12 @@ def check_pass_adm(message):
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_VALID_ADM_PASS.value)
 def pull_data_adm(message):
 	if message.text == "Pull data":
-		bot.send_message(message.chat.id, "Pullling 'mental health' data... and logout", reply_markup = types.ReplyKeyboardRemove())
+		db = Database()
+		students = db.get_list_students()
+		for student in sort_for_adm(students):
+			bot.send_message(message.chat.id, student.to_string_adm())
+		bot.send_message(message.chat.id, "End of list of students. Admin logout", reply_markup = types.ReplyKeyboardRemove())
+		db.close()
 	elif message.text == "Quit":
 		bot.send_message(message.chat.id, "Admin logout", reply_markup = types.ReplyKeyboardRemove())
 	print_info(message)
@@ -133,7 +139,12 @@ def check_pass_teacher(message):
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_VALID_TEACH_PASS.value)
 def pull_data_teacher(message):
 	if message.text == "Pull data":
-		bot.send_message(message.chat.id, "Pullling 'academic perfomance' data... and logout", reply_markup = types.ReplyKeyboardRemove())
+		db = Database()
+		students = db.get_list_students()
+		for student in sort_for_teacher(students):
+			bot.send_message(message.chat.id, student.to_string_teacher())
+		bot.send_message(message.chat.id, "", reply_markup = types.ReplyKeyboardRemove())
+		db.close()
 	elif message.text == "Quit":
 		bot.send_message(message.chat.id, "Teacher logout", reply_markup = types.ReplyKeyboardRemove())
 	print_info(message)
