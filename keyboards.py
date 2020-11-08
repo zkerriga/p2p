@@ -1,7 +1,6 @@
 from telebot import types
 
 def get_eval_keyboard():
-	print("[+] keyboard")
 	button_eval = types.KeyboardButton("Evaluate")
 	button_be_eval = types.KeyboardButton("Be evaluated")
 	start_two_buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)

@@ -39,7 +39,7 @@ def add_to_database(message):
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
 											and message.text == "Evaluate")
 def evaluate(message):
-	print(f"[+] Evaluate {message.from_user.username}")
+	print(f"[+] EVALUATE BUTTON {message.from_user.username}")
 
 	set_state(message.chat.id, st.S_EVALUATE.value)
 	current_student = get_student_from_db(message.from_user.id)
@@ -60,7 +60,7 @@ def evaluate(message):
 @bot.message_handler(func = lambda message: get_state(message.chat.id) == st.S_TWO_BUTTONS.value
 											and message.text == "Be evaluated")
 def to_be_evaluate(message):
-	print(f"[+] To be evaluated {message.from_user.username}")
+	print(f"[+] TO BE EVALUETED BUTTON {message.from_user.username}")
 
 	set_state(message.chat.id, st.S_TO_BE_EVALUATE.value)
 	current_student = get_student_from_db(message.from_user.id)

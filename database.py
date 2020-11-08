@@ -10,8 +10,8 @@ class Database():
 	table_student = "Students"
 	student_1 = Student(user_id = 51325135,
 						university = "California Institute of Technology",
-						name = "Nick",
-						link = "t.me/zkerriga",
+						name = "Durov Pavel",
+						link = "t.me/durov",
 						level = 1,
 						mood_grades = [1, 2, 3],
 						project_name = 'Differential equation',
@@ -20,7 +20,7 @@ class Database():
 	student_2 = Student(user_id = 531253125,
 						university = "Yale University",
 						name = "Kelly",
-						link = "t.me/Sasha_mar9",
+						link = "t.me/kelly",
 						level = 2,
 						mood_grades = [1, 1, 1],
 						project_name = 'Double integral',
@@ -29,7 +29,7 @@ class Database():
 	student_3 = Student(user_id = 521351,
 						university = "University of Cambridge",
 						name = "Ray",
-						link = "t.me/awerebea",
+						link = "t.me/ray",
 						level = 1,
 						mood_grades = [3, 2, 3],
 						project_name = 'Double integral',
@@ -142,7 +142,7 @@ class Database():
 				return matched_student
 			else:
 				None
-		return None	
+		return None
 
 	def get_list_students(self):
 		"""
