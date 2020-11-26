@@ -39,3 +39,16 @@ This service can not only apply to one university but a group of them.
 
 ### DEMO VERSION
 We provide some demo-version of "peer to peer" matching system for students with telegram bot and using Python. In the **future**, it can **be a service** that can be involved in the electronic management system of any university!
+
+### VIDEO
+[Click to view the presentation](https://youtu.be/s-PjsfRpamM)
+
+### DEMO
+https://t.me/p2p_junction_bot *(The bot is currently not working)*
+
+### TEAM
+* [Aleksandr Marakulin](https://github.com/1Sancha1)
+* [Amir Muratov](https://github.com/deddara)
+* [Daniil Eletskii](https://github.com/zkerriga)
+* [Andrei Bulgakov](https://github.com/awerebea)
+* [Vitalii Evstratov](https://github.com/vesord)
