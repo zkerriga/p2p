@@ -46,7 +46,7 @@ We provide some demo-version of "peer to peer" matching system for students with
 [https://youtu.be/s-PjsfRpamM](https://youtu.be/s-PjsfRpamM)
 
 ### TEAM
-* [Aleksandr Marakulin](https://github.com/1Sancha1)
+* [Aleksandr Marakulin](https://github.com/pichkasik)
 * [Amir Muratov](https://github.com/deddara)
 * [Daniil Eletskii](https://github.com/zkerriga)
 * [Andrei Bulgakov](https://github.com/awerebea)
